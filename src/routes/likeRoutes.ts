@@ -5,7 +5,7 @@ const router = Router();
 
 
 /**
- * @swagger
+ * @openapi
  * /api/listing/{id}/like:
  *   post:
  *     summary: 좋아요 누르기
@@ -31,7 +31,7 @@ const router = Router();
 router.post('/listing/:id/like', createLike);
 
 /**
- * @swagger
+ * @openapi
  * /api/listing/{id}/like:
  *   delete:
  *     summary: 좋아요 취소
@@ -57,7 +57,7 @@ router.post('/listing/:id/like', createLike);
 router.delete('/listing/:id/like', deleteLike);
 
 /**
- * @swagger
+ * @openapi
  * /api/listing/{id}/likes:
  *   get:
  *     summary: 좋아요 수 조회

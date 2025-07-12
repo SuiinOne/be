@@ -1,18 +1,17 @@
-import swaggerJSDoc from 'swagger-jsdoc';
-import swaggerUi from 'swagger-ui-express';
+// swagger.ts
+import swaggerJsdoc from 'swagger-jsdoc';
+import path from 'path';
 
-const options = {
-  definition: {
-    openapi: '3.0.0',
-    info: {
-      title: 'SUI BE API',
-      version: '1.0.0',
-      description: 'Sui 백엔드 API 문서',
+export const swaggerSpec = swaggerJsdoc({  // ← ✅ export 추가
+    definition: {
+      openapi: '3.0.0',
+      info: {
+        title: 'SUI Marketplace API',
+        version: '1.0.0',
+        description: 'SUI Marketplace 관련 API 문서',
+      },
+      servers: [{ url: 'http://localhost:3000' }],
     },
-  },
-  apis: ['./src/routes/*.ts'], // ✨ 주석으로 API 명세 작성한 파일 경로
-};
 
-const specs = swaggerJSDoc(options);
-
-export { swaggerUi, specs };
+    apis: [path.resolve(__dirname, '../routes/*.js')],
+  });
