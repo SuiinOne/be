@@ -7,7 +7,7 @@ const likeRepository = AppDataSource.getRepository(Like);
 
 export const createLike = async (req: Request, res: Response) => {
   const listingId = Number(req.params.id);
-  const walletAddress = req.body.walletAddress; // 실제 로그인된 사용자에서 가져오는 것이 더 좋음
+  const walletAddress = req.body.walletAddress; // jwt 로 변경 예정
 
   const newLike = likeRepository.create({ listing_id: listingId, wallet_address: walletAddress });
 
