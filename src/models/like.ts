@@ -1,13 +1,18 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column ,ManyToOne, JoinColumn } from "typeorm";
+import { User } from "./user";
 
-@Entity()
+@Entity('like') 
 export class Like {
     @PrimaryGeneratedColumn()
     id!: number;
 
-    @Column()
-    listing_id!: number;
+    @Column({ name: "listing_id" })
+    listingId!: number;
+    
+    @ManyToOne(() => User, user => user.likes, { onDelete: 'CASCADE' })
+    @JoinColumn({ name: "wallet_address", referencedColumnName: "walletAddress" })
+    user!: User;
 
     @Column()
-    wallet_address!: string;
+    walletAddress!: string;
 }

@@ -6,8 +6,8 @@ const likeRepository = AppDataSource.getRepository(Like);
 
 export const createLike = async (listingId: number, walletAddress: string) => {
   const existing = await likeRepository.findOneBy({
-    listing_id: listingId,
-    wallet_address: walletAddress,
+    listingId: listingId,
+    walletAddress: walletAddress,
   });
 
   if (existing) {
@@ -15,8 +15,8 @@ export const createLike = async (listingId: number, walletAddress: string) => {
   }
 
   const newLike = likeRepository.create({
-    listing_id: listingId,
-    wallet_address: walletAddress,
+    listingId: listingId,
+    walletAddress: walletAddress,
   });
 
   return await likeRepository.save(newLike);
@@ -24,8 +24,8 @@ export const createLike = async (listingId: number, walletAddress: string) => {
 
 export const deleteLike = async (listingId: number, walletAddress: string) => {
   const result = await likeRepository.delete({
-    listing_id: listingId,
-    wallet_address: walletAddress,
+    listingId: listingId,
+    walletAddress: walletAddress,
   });
 
   if (result.affected === 0) {
@@ -34,5 +34,10 @@ export const deleteLike = async (listingId: number, walletAddress: string) => {
 };
 
 export const getLikeCount = async (listingId: number) => {
-  return await likeRepository.count({ where: { listing_id: listingId } });
+    
+    const count = await likeRepository.count({ where: { listingId } })
+    console.log("조회된 like 수:", count);
+    return count
+
+
 };

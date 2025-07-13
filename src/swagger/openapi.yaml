@@ -1,3 +1,4 @@
+
 openapi: 3.0.0
 info:
   version: 1.0.0
@@ -6,12 +7,6 @@ info:
   license:
     name: MIT
 servers:
-  - url: 'http://localhost:3000'
-paths:
-  /ping:
-    get:
-      summary: 헬스 체크
-      description: 서버가 살아있는지 확인합니다.
-      responses:
-        '200':
-          description: 성공 응답
+  - url: http://localhost:3000
+
+paths: {}
