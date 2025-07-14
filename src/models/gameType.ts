@@ -26,8 +26,7 @@ export class GameType {
 
   @Column({ default: false })
   active!: boolean;
-
-  // ✅ 역방향 설정 (optional)
+  
   @OneToMany(() => Item, item => item.gameType)
   items!: Item[];
 }

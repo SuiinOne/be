@@ -1,6 +1,6 @@
 import express from "express";
 import dotenv from "dotenv";
-import listRoutes from "./routes/listing";
+import ListRoutes from "./routes/listingRoutes";
 import likeRoutes from "./routes/likeRoutes";
 import swaggerUi from "swagger-ui-express";
 import { swaggerSpec } from "./config/swagger"; 
@@ -30,7 +30,8 @@ initDB();
 listingTables();
 
 // 라우터 등록
-app.use("/api/listing", listRoutes);
+console.log('ListRoutes 타입:', typeof ListRoutes); 
+app.use('/api/listing', ListRoutes);
 app.use("/api", likeRoutes); //
 
 app.get("/ping", (req, res) => {

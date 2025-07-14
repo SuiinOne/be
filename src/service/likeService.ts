@@ -4,40 +4,32 @@ import { Like } from '../models/like';
 
 const likeRepository = AppDataSource.getRepository(Like);
 
-export const createLike = async (listingId: number, walletAddress: string) => {
-  const existing = await likeRepository.findOneBy({
-    listingId: listingId,
-    walletAddress: walletAddress,
-  });
+export class LikeService {
+  static async createLike(listingId: number, walletAddress: string) {
+    const existing = await likeRepository.findOneBy({
+      listingId,
+      walletAddress,
+    });
 
-  if (existing) {
-    throw new Error('이미 좋아요를 누른 상태입니다.');
+    if (existing) {
+      throw new Error('이미 좋아요를 누른 상태입니다.');
+    }
+
+    const newLike = likeRepository.create({ listingId, walletAddress });
+    return await likeRepository.save(newLike);
   }
 
-  const newLike = likeRepository.create({
-    listingId: listingId,
-    walletAddress: walletAddress,
-  });
+  static async deleteLike(listingId: number, walletAddress: string) {
+    const result = await likeRepository.delete({ listingId, walletAddress });
 
-  return await likeRepository.save(newLike);
-};
-
-export const deleteLike = async (listingId: number, walletAddress: string) => {
-  const result = await likeRepository.delete({
-    listingId: listingId,
-    walletAddress: walletAddress,
-  });
-
-  if (result.affected === 0) {
-    throw new Error('좋아요 기록이 없습니다.');
+    if (result.affected === 0) {
+      throw new Error('좋아요 기록이 없습니다.');
+    }
   }
-};
 
-export const getLikeCount = async (listingId: number) => {
-    
-    const count = await likeRepository.count({ where: { listingId } })
-    console.log("조회된 like 수:", count);
-    return count
-
-
-};
+  static async getLikeCount(listingId: number) {
+    const count = await likeRepository.count({ where: { listingId } });
+    console.log('조회된 like 수:', count);
+    return count;
+  }
+}
