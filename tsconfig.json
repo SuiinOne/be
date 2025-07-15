@@ -1,13 +1,17 @@
 {
   "compilerOptions": {
-    "target": "es2016",                                  /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */
-    "module": "commonjs",                                /* Specify what module code is generated. */
-    "rootDir": "./src",                                  /* Specify the root folder within your source files. */
-    "outDir": "./dist",                                   /* Specify an output folder for all emitted files. */
-    "esModuleInterop": true,                             /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables 'allowSyntheticDefaultImports' for type compatibility. */
-    "forceConsistentCasingInFileNames": true,            /* Ensure that casing is correct in imports. */
-    "strict": true,                                      /* Enable all strict type-checking options. */
-    "skipLibCheck": true                                 /* Skip type checking all .d.ts files. */
+    "target": "ES2021",                            // 최신 JS 문법을 사용
+    "module": "CommonJS",                          // Node.js에서 일반적으로 사용
+    "rootDir": "./src",                            // 소스 디렉터리
+    "outDir": "./dist",                            // 빌드 결과물 위치
+    "moduleResolution": "node",                    // Node 방식으로 모듈 해석
+    "esModuleInterop": true,                       // CommonJS 호환성
+    "resolveJsonModule": true,                     // JSON import 허용
+    "emitDecoratorMetadata": true,                 // TypeORM 데코레이터에 필요
+    "experimentalDecorators": true,                // TypeORM 데코레이터에 필요
+    "forceConsistentCasingInFileNames": true,      // 대소문자 일관성
+    "strict": true,                                // 타입 검사 엄격하게
+    "skipLibCheck": true                           // 라이브러리 타입 검사 생략
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules"]

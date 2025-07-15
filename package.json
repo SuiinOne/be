@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "dist/app.js",
   "scripts": {
-    "build": "npx tsc",
+    "api-docs": "swagger-cli bundle ./src/swagger/openapi.yaml --outfile dist/swagger/openapi.yaml --type yaml",
+    "build": "npm run api-docs && tsc",
     "dev": "concurrently \"npx tsc --watch\" \"nodemon dist/app.js\" ",
     "start": "node dist/app.js"
   },
@@ -12,13 +13,23 @@
   "keywords": [],
   "description": "",
   "dependencies": {
+    "@mysten/sui": "^1.36.0",
     "dotenv": "^17.0.1",
     "express": "^5.1.0",
     "mysql2": "^3.14.1",
-    "typescript": "^5.8.3"
+    "reflect-metadata": "^0.2.2",
+    "swagger-cli": "^4.0.4",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1",
+    "typeorm": "^0.3.25",
+    "typescript": "^5.8.3",
+    "yamljs": "^0.3.0"
   },
   "devDependencies": {
     "@types/express": "^5.0.3",
+    "@types/swagger-jsdoc": "^6.0.4",
+    "@types/swagger-ui-express": "^4.1.8",
+    "@types/yamljs": "^0.2.34",
     "concurrently": "^9.2.0",
     "nodemon": "^3.1.10"
   }
