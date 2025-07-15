@@ -26,4 +26,3 @@ export const relayerKeypair = keypair;
 
 // 지갑 주소 가져오기
 const address = keypair.getPublicKey().toSuiAddress();
-console.log('서버 지갑 주소:', address);

@@ -48,7 +48,7 @@ export class AcceptedTypeService {
 
   static async callRegisterTypeOnChain(data: any): Promise<string> {
     // 이 부분은 나중에 실제 체인 SDK 연결
-    console.log('📡 체인에 register_type 호출 시도 중...');
+    console.log('체인에 register_type 호출 시도 중...');
 
     // 가짜 대기 시간 + 더미 응답
     await new Promise((res) => setTimeout(res, 1000));

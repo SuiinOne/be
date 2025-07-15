@@ -8,7 +8,7 @@ import { swaggerSpec } from "./config/swagger";
 import { listingTables } from "./models/listingModel";
 import { initDB } from "./config/db";
 import { AppDataSource } from './config/data-source'; 
-
+import helloSuiRoutes from './routes/helloSuiRoutes';
 
 dotenv.config();
 const app = express();
@@ -34,6 +34,9 @@ listingTables();
 app.use('/api/listing', ListRoutes);
 app.use("/api", likeRoutes); 
 app.use('/api', gameTypeRoutes);
+
+//트랜잭션 보내기 테스트용 라우터
+app.use('/api', helloSuiRoutes);
 
 app.get("/ping", (req, res) => {
   res.send("pong");

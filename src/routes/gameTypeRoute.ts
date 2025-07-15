@@ -1,6 +1,6 @@
 // src/routes/acceptedTypeRoutes.ts
 import { Router } from 'express';
-import { getAcceptedTypes } from '../controllers/gameTypeController';
+import { getAcceptedTypes, registerAcceptedType } from '../controllers/gameTypeController';
 
 const router = Router();
 
@@ -30,5 +30,36 @@ const router = Router();
  *                     type: string
  */
 router.get('/accepted-types', getAcceptedTypes);
+
+/**
+ * @openapi
+ * /api/accepted-types:
+ *   post:
+ *     summary: 게임 타입 체인 등록 요청
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               moduleAddress:
+ *                 type: string
+ *               typeName:
+ *                 type: string
+ *               type:
+ *                 type: string
+ *               url:
+ *                 type: string
+ *               owner:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *     responses:
+ *       201:
+ *         description: 등록 요청 완료
+ */
+router.post('/accepted-types', registerAcceptedType);
+
 
 export default router;
