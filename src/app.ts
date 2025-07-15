@@ -5,8 +5,6 @@ import likeRoutes from "./routes/likeRoutes";
 import gameTypeRoutes from './routes/gameTypeRoute';
 import swaggerUi from "swagger-ui-express";
 import { swaggerSpec } from "./config/swagger"; 
-import { listingTables } from "./models/listingModel";
-import { initDB } from "./config/db";
 import { AppDataSource } from './config/data-source'; 
 import helloSuiRoutes from './routes/helloSuiRoutes';
 
@@ -26,9 +24,6 @@ AppDataSource.initialize()
   .catch((error) => {
     console.error('DB 연결 실패:', error);
   });
-
-initDB();
-listingTables();
 
 // 라우터 등록
 app.use('/api/listing', ListRoutes);
