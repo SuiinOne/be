@@ -5,6 +5,7 @@ import { Like } from '../models/like';
 import { Item } from '../models/item';
 import { GameType } from '../models/gameType';
 import { User } from '../models/user'
+import { SalesHistory } from "../models/salesHistory";
 
 
 dotenv.config();
@@ -16,7 +17,7 @@ export const AppDataSource = new DataSource({
     username: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
-    entities: [Like, Item, GameType, User],
+    entities: [Like, Item, GameType, User, SalesHistory],
     synchronize: true, // 개발용. 자동 테이블 생성
     logging: true,
 });

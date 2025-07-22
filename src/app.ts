@@ -7,6 +7,7 @@ import swaggerUi from "swagger-ui-express";
 import { swaggerSpec } from "./config/swagger"; 
 import { AppDataSource } from './config/data-source'; 
 import helloSuiRoutes from './routes/helloSuiRoutes';
+import itemRoutes from './routes/itemRoutes';
 
 dotenv.config();
 const app = express();
@@ -29,6 +30,7 @@ AppDataSource.initialize()
 app.use('/api/listing', ListRoutes);
 app.use("/api", likeRoutes); 
 app.use('/api', gameTypeRoutes);
+app.use('/api/item', itemRoutes);
 
 //트랜잭션 보내기 테스트용 라우터
 app.use('/api', helloSuiRoutes);

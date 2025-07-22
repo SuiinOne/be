@@ -7,6 +7,9 @@ export class Item {
   id!: number;
 
   @Column()
+  objectId!: string;
+
+  @Column()
   title!: string;
 
   @Column()

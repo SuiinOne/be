@@ -3,12 +3,6 @@ import { ListingService } from '../service/listingService';
 
 const listingService = new ListingService();
 
-
-export const listItem = async (request: any, response: any) => {
-    console.log(request, response);
-
-}
-
 export const getListings = async (req: Request, res: Response) => {
     try {
         const items = await listingService.getAllListings();
