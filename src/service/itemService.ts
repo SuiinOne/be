@@ -4,12 +4,14 @@ import { Item } from "../models/item";
 import { relayerKeypair } from "../utils/relayerKeypair";
 import { suiClient } from "../config/suiClient";
 import { SalesHistory } from "../models/salesHistory";
+import { Like } from '../models/like';
+import { itemRepository } from '../repository/ItemRepository';
+import { salesHistoryRepository } from '../repository/salesHistoryRepository';
+import { likeRepository } from '../repository/likeRepository';
 
 export class itemService {
     // 구매한 아이템 전송
     static async itemTransfer(itemId: number, buyerAddress: string) {
-        const itemRepository = AppDataSource.getRepository(Item);
-        const salesHistoryRepository = AppDataSource.getRepository(SalesHistory);
         const item = await itemRepository.findOneBy({
             id: itemId
         })
@@ -47,8 +49,9 @@ export class itemService {
             })
             const saveHistory = await salesHistoryRepository.save(salesHistory);
 
-            // item table update -> active = false
+            // item table update -> active = false, owner 변경
             item.active = false;
+            item.owner = buyerAddress;
             const saveItem = await itemRepository.save(item);
 
             return saveHistory;
@@ -61,5 +64,40 @@ export class itemService {
     // 아이템 구매 비용 지불
     static async itemPayment() { 
         //const { bytes, signature } = tx.sign({ client: suiClient, signer: relayerKeypair });
+    }
+
+    static async itemHistory(itemId: number) {
+        const item = await itemRepository.findOneBy({
+            id: itemId
+        })
+
+        if (!item) {
+            throw new Error("등록되지 않은 아이템입니다.");
+        }
+
+        const historys = await salesHistoryRepository.find({
+            where: { item: item },
+            order: { soldAt: "DESC"},
+        });
+        return historys;
+    }
+
+    static async itemStats(itemId: number) {
+        const item = await itemRepository.findOneBy({
+            id: itemId
+        })
+        if (!item) {
+            throw new Error("등록되지 않은 아이템입니다.");
+        }
+
+        const like = await likeRepository.find({
+            where: { listingId: itemId}
+        });
+        const likeCount = like.length;
+        const salesHistory = await salesHistoryRepository.find({
+            where: { item: item}
+        });
+        const saleCount = salesHistory.length;
+        return { likeCount, saleCount };
     }
 }
