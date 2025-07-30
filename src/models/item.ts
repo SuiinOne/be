@@ -27,6 +27,9 @@ export class Item {
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt!: Date;
 
+  @Column({ nullable: true })
+  txHash?: string; // Sui 트랜잭션 해시 (Listing 등록 시 채워짐)
+
   // GameType FK 설정
   @ManyToOne(() => GameType, gameType => gameType.items)
   @JoinColumn({ name: 'game_type_id' }) // FK 컬럼 이름

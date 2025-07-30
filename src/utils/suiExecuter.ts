@@ -18,3 +18,22 @@ export async function sendTransactionByServer(tx: Transaction): Promise<string> 
 
   return digest;
 }
+
+export async function broadcastSignedTransaction(
+  bytes: string,
+  signature: string
+): Promise<string> {
+  const { digest } = await suiClient.executeTransactionBlock({
+    transactionBlock: bytes,
+    signature,
+    requestType: 'WaitForLocalExecution',
+    options: {
+      showEffects: true,
+      showEvents: true,
+      showInput: true,
+      showObjectChanges: true,
+    },
+  });
+
+  return digest;
+}
