@@ -8,6 +8,7 @@ import { Like } from '../models/like';
 import { itemRepository } from '../repository/ItemRepository';
 import { salesHistoryRepository } from '../repository/salesHistoryRepository';
 import { likeRepository } from '../repository/likeRepository';
+import { sendTransactionByServer } from '../utils/suiExecuter';
 
 export class itemService {
     // 구매한 아이템 전송
@@ -25,19 +26,9 @@ export class itemService {
 
         const tx = new Transaction();
         tx.transferObjects([item.objectId], buyerAddress); 
-        // 마켓 서명
-        const result = await suiClient.signAndExecuteTransaction({
-            transaction: tx,
-            signer: relayerKeypair,
-        });
-        const transaction = await suiClient.waitForTransaction({
-            digest: result.digest,
-            options: {
-                showEffects: true,
-            },
-        });
+        const digest = await sendTransactionByServer(tx); // utils 이용
 
-        if (transaction.effects) {
+        if ( digest ) {
             console.log("object 전송 트랜잭션 실행 성공");
             const salesHistory = salesHistoryRepository.create({ // salesHistory table update
                 item: item,
@@ -45,7 +36,7 @@ export class itemService {
                 seller: item.owner,
                 buyer: buyerAddress,
                 price: item.price,
-                txDigest: transaction.digest,
+                txDigest: digest,
             })
             const saveHistory = await salesHistoryRepository.save(salesHistory);
 
