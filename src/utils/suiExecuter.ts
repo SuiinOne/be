@@ -22,8 +22,8 @@ export async function sendTransactionByServer(tx: Transaction): Promise<string> 
 export async function broadcastSignedTransaction(
   bytes: string,
   signature: string
-): Promise<string> {
-  const { digest } = await suiClient.executeTransactionBlock({
+): Promise<{ digest: string; effects: any }> {
+  const { digest, effects } = await suiClient.executeTransactionBlock({
     transactionBlock: bytes,
     signature,
     requestType: 'WaitForLocalExecution',
@@ -35,5 +35,5 @@ export async function broadcastSignedTransaction(
     },
   });
 
-  return digest;
+  return { digest, effects };
 }

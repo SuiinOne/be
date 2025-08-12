@@ -5,9 +5,10 @@ import { GameType } from '../models/gameType';
 import { Transaction } from '@mysten/sui/transactions';
 import { sendTransactionByServer } from '../utils/suiExecuter';
 
-const GAMETYPE_MODULE_NAME = 'game_type';
-const GAMETYPE_FUNCTION_NAME = 'mint';
-const GAME_TYPE_REGISTER = 'fdfafdfdfsaf';
+const GAMETYPE_MODULE_NAME = 'accepted_type';
+const GAMETYPE_FUNCTION_NAME = 'register_type';
+const GAME_TYPE_REGISTER = '0xa7023574d5591bcdc871ca64bd416799c6e51161b6de84c9076c09e5bdacc22b';
+const PACKAGEID = "0xb1f15f4fe50612117e731a5aac0106053ae451be299d6bfe44f6de3867e1d756";
 
 export class AcceptedTypeService {
   static async getAcceptedTypes() {
@@ -54,14 +55,12 @@ export class AcceptedTypeService {
   private static buildRegisterTypeTransaction(saved: GameType): Transaction {
     const tx = new Transaction();
     tx.moveCall({
-      target: `${GAME_TYPE_REGISTER}::${GAMETYPE_MODULE_NAME}::${GAMETYPE_FUNCTION_NAME}`,
-      arguments: [
-        tx.pure.address(saved.owner),
-        tx.pure.address(saved.moduleAddress),
-        tx.pure.string(saved.typeName),
-        tx.pure.u64(saved.type),
-        tx.pure.string(saved.url),
-        tx.pure.string(saved.password),
+      target: `${PACKAGEID}::${GAMETYPE_MODULE_NAME}::${GAMETYPE_FUNCTION_NAME}`,
+      arguments: [   
+        tx.pure.string(`${PACKAGEID}::test_nft::TestNFT`), // type_name
+        tx.pure.address(saved.moduleAddress), 
+        tx.pure.string(saved.url), // metadata_url
+        tx.object(GAME_TYPE_REGISTER) // acceptedTypeRegisteryId
       ],
     });
     return tx;

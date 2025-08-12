@@ -8,11 +8,11 @@ import { Like } from '../models/like';
 import { itemRepository } from '../repository/ItemRepository';
 import { salesHistoryRepository } from '../repository/salesHistoryRepository';
 import { likeRepository } from '../repository/likeRepository';
-import { sendTransactionByServer } from '../utils/suiExecuter';
+import { broadcastSignedTransaction } from '../utils/suiExecuter';
 
 export class itemService {
     // 구매한 아이템 전송
-    static async itemTransfer(itemId: number, buyerAddress: string) {
+    static async itemTransfer(itemId: number, bytes: string, signature: string) {
         const item = await itemRepository.findOneBy({
             id: itemId
         })
@@ -24,9 +24,7 @@ export class itemService {
             throw new Error("이미 판매된 아이템입니다.");
         }
 
-        const tx = new Transaction();
-        tx.transferObjects([item.objectId], buyerAddress); 
-        const digest = await sendTransactionByServer(tx); // utils 이용
+        const { digest, effects } = await broadcastSignedTransaction(bytes, signature);
 
         if ( digest ) {
             console.log("object 전송 트랜잭션 실행 성공");
@@ -34,7 +32,7 @@ export class itemService {
                 item: item,
                 gameType: item.gameType,
                 seller: item.owner,
-                buyer: buyerAddress,
+                buyer: effects.sender,
                 price: item.price,
                 txDigest: digest,
             })
@@ -42,7 +40,7 @@ export class itemService {
 
             // item table update -> active = false, owner 변경
             item.active = false;
-            item.owner = buyerAddress;
+            item.owner = effects.sender;
             const saveItem = await itemRepository.save(item);
 
             return saveHistory;
@@ -50,11 +48,6 @@ export class itemService {
         } else {
             throw new Error("object 전송 트랜잭션 실패")
         }
-    }
-
-    // 아이템 구매 비용 지불
-    static async itemPayment() { 
-        //const { bytes, signature } = tx.sign({ client: suiClient, signer: relayerKeypair });
     }
 
     static async itemHistory(itemId: number) {
@@ -82,7 +75,7 @@ export class itemService {
         }
 
         const like = await likeRepository.find({
-            where: { listingId: itemId}
+            where: { listingId: itemId }
         });
         const likeCount = like.length;
         const salesHistory = await salesHistoryRepository.find({

@@ -33,7 +33,7 @@ export class ListingService {
   
     try {
       // 1. 서명된 트랜잭션 브로드캐스트
-      const digest = await broadcastSignedTransaction(bytes, signature);
+      const { digest, effects } = await broadcastSignedTransaction(bytes, signature);
   
       // 2. 체인 성공 후 새 아이템을 DB에 등록
       const item = repository.create({
